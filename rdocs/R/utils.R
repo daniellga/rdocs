@@ -35,7 +35,7 @@ download_rdocs <- function() {
 
   # download
   dir.create(download_tmp_dir)
-  download_url <- get_download_url
+  download_url <- get_download_url()
   cat(download_url)
   archive_file <- file.path(download_tmp_dir, basename(download_url))
   download.file(download_url, destfile = archive_file, mode = "wb")
