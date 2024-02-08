@@ -40,18 +40,15 @@ download_rdocs <- function() {
   archive_file <- file.path(download_tmp_dir, basename(download_url))
   download.file(download_url, destfile = archive_file, mode = "wb")
 
-  cat(1)
   # extract and copy
   if (Sys.info()[["sysname"]] == "Windows") {
     utils::unzip(archive_file, exdir = extract_tmp_dir)
-    cat(2)
     file.copy(file.path(extract_tmp_dir, "rdocs.exe"), RDOCS_PATH, overwrite = TRUE)
   } else {
     utils::untar(archive_file, exdir = extract_tmp_dir, extras = "--strip-components=1")
     file.copy(file.path(extract_tmp_dir, "rdocs"), RDOCS_PATH, overwrite = TRUE)
   }
 
-  cat(3)
   invisible(NULL)
 }
 
@@ -63,5 +60,6 @@ generate_docs <- function(files, docs_path = "./docs", gh_url = "") {
     download_rdocs()
   }
 
+  cat(4)
   system2(RDOCS_PATH, args = c("--files", files, "--docs_path", docs_path, "--gh_url", gh_url))
 }
