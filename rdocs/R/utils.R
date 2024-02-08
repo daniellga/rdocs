@@ -36,7 +36,6 @@ download_rdocs = function() {
   # download
   dir.create(download_tmp_dir)
   download_url = get_download_url()
-  cat(download_url)
   archive_file = file.path(download_tmp_dir, basename(download_url))
   download.file(download_url, destfile = archive_file, mode = "wb")
 
@@ -60,8 +59,5 @@ generate_docs = function(files, docs_path = "./docs", gh_url = "") {
     download_rdocs()
   }
 
-  cat(4)
-  cat(RDOCS_PATH)
-
-  system2(RDOCS_PATH, args = c("--files", files, "--docs_path", docs_path, "--gh_url", gh_url))
+  system2(RDOCS_PATH, args = c("--files", files, "--docs-path", docs_path, "--gh-url", gh_url))
 }
