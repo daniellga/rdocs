@@ -54,15 +54,14 @@ download_rdocs = function() {
 generate_docs = function(files, docs_path = "./docs", gh_url = "") {
   files = shQuote(normalizePath(files, mustWork = FALSE))
   docs_path = shQuote(normalizePath(docs_path, mustWork = FALSE))
+  gh_url = shQuote(gh_url)
 
   if (!file.exists(RDOCS_PATH)) {
     cat("Downloading rdocs binary")
     download_rdocs()
   }
 
-  cat(files)
-  cat("\n")
-  cat(docs_path)
+  cat(gh_url)
 
   system2(RDOCS_PATH, args = c("--files", files, "--docs-path", docs_path, "--gh-url", gh_url))
 }
