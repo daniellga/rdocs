@@ -61,5 +61,7 @@ generate_docs <- function(files, docs_path = "./docs", gh_url = "") {
   }
 
   cat(4)
+  cat(RDOCS_PATH)
+
   system2(RDOCS_PATH, args = c("--files", files, "--docs_path", docs_path, "--gh_url", gh_url))
 }
