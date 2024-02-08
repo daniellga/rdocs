@@ -1,10 +1,10 @@
-RDOCS_URL_BASE <- "https://github.com/daniellga/rdocs/releases/download"
+RDOCS_URL_BASE = "https://github.com/daniellga/rdocs/releases/download"
 
-RDOCS_NAME <- "rdocs"
+RDOCS_NAME = "rdocs"
 
 RDOCS_CACHE_DIR = normalizePath(tools::R_user_dir("rdocs", "cache"), mustWork = FALSE)
 
-RDOCS_PATH <- {
+RDOCS_PATH = {
   if (Sys.info()[["sysname"]] == "Windows") {
     file.path(RDOCS_CACHE_DIR, paste0(RDOCS_NAME, ".exe"))
   } else {
@@ -12,13 +12,13 @@ RDOCS_PATH <- {
   }
 }
 
-latest_release <- jsonlite::read_json("https://api.github.com/repos/daniellga/rdocs/releases/latest")[["tag_name"]]
+latest_release = jsonlite::read_json("https://api.github.com/repos/daniellga/rdocs/releases/latest")[["tag_name"]]
 
-get_download_url <- function() {
-  os <- Sys.info()[["sysname"]]
-  arch <- Sys.info()[["machine"]]
+get_download_url = function() {
+  os = Sys.info()[["sysname"]]
+  arch = Sys.info()[["machine"]]
 
-  binary <- switch(os,
+  binary = switch(os,
     Windows = "rdocs-x86_64-pc-windows-msvc.zip",
     Linux   = if(arch == "x86-64") "rdocs-x86_64-unknown-linux-gnu.tar.xz" else "rdocs-aarch64-unknown-linux-gnu.tar.xz",
     Darwin  = if(arch == "x86-64") "rdocs-x86_64-apple-darwin.tar.xz" else "rdocs-aarch64-apple-darwin.tar.xz"
@@ -27,17 +27,17 @@ get_download_url <- function() {
   paste(RDOCS_URL_BASE, latest_release, binary, sep = "/")
 }
 
-download_rdocs <- function() {
-  download_tmp_dir <- tempfile()
-  extract_tmp_dir <- tempfile()
+download_rdocs = function() {
+  download_tmp_dir = tempfile()
+  extract_tmp_dir = tempfile()
   on.exit(unlink(download_tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
   on.exit(unlink(extract_tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
 
   # download
   dir.create(download_tmp_dir)
-  download_url <- get_download_url()
+  download_url = get_download_url()
   cat(download_url)
-  archive_file <- file.path(download_tmp_dir, basename(download_url))
+  archive_file = file.path(download_tmp_dir, basename(download_url))
   download.file(download_url, destfile = archive_file, mode = "wb")
 
   # extract and copy
@@ -52,7 +52,7 @@ download_rdocs <- function() {
   invisible(NULL)
 }
 
-generate_docs <- function(files, docs_path = "./docs", gh_url = "") {
+generate_docs = function(files, docs_path = "./docs", gh_url = "") {
   files = normalizePath(files)
   docs_path = normalizePath(docs_path)
   if (!file.exists(RDOCS_PATH)) {
