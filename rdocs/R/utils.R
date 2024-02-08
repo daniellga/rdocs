@@ -53,7 +53,8 @@ download_rdocs = function() {
 
 generate_docs = function(files, docs_path = "./docs", gh_url = "") {
   files = normalizePath(files)
-  docs_path = normalizePath(docs_path)
+  docs_path = normalizePath(docs_path, mustWork = FALSE)
+
   if (!file.exists(RDOCS_PATH)) {
     cat("Downloading rdocs binary")
     download_rdocs()
