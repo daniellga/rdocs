@@ -26,10 +26,6 @@ fn main() {
     let gh_url = args.gh_url;
     let docs_path = PathBuf::from(args.docs_path);
 
-    println!("{:?}", files);
-    println!("{:?}", docs_path);
-
-
     let mut hash: HashMap<String, Vec<String>> = HashMap::new();
     generate_r_docs(files, gh_url, &mut hash);
 

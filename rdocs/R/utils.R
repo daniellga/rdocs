@@ -61,7 +61,5 @@ generate_docs = function(files, docs_path = "./docs", gh_url = "") {
     download_rdocs()
   }
 
-  cat(gh_url)
-
   system2(RDOCS_PATH, args = c("--files", files, "--docs-path", docs_path, "--gh-url", gh_url))
 }
