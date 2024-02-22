@@ -54,9 +54,6 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
             let line_trimmed = line.trim_start();
 
             if let Some(stripped) = line_trimmed.strip_prefix("///") {
-                println!("last_line_was_comment: {:?}", skip_comment_chunk);
-                println!("skip_comment_chunk: {:?}", skip_comment_chunk);
-                println!("stripped:    {:?}", stripped);
                 counter += 1;
                 if skip_comment_chunk {
                     continue;
@@ -65,11 +62,8 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
                 // skip first space.
                 let filtered_line = stripped.strip_prefix(' ').unwrap_or(stripped).to_string();
 
-                println!("linha:    {:?}", filtered_line);
-
                 // associate with key in first line of comment chunk. Keys are identifiable by a 1 word line.
                 if !last_line_was_comment {
-                    println!("entrou no if");
                     key = filtered_line.clone();
                     // key should have only one word
                     if key.contains(' ') {
@@ -79,7 +73,6 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
                     hash.entry(key.clone()).or_insert_with(Vec::new);
                     last_line_was_comment = true;
                 } else {
-                    println!("entrou no else");
                     hash.get_mut(&key).unwrap().push(filtered_line);
                 }
             } else if let Some(stripped) = line_trimmed.strip_prefix("###") {
