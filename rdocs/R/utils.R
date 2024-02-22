@@ -71,7 +71,7 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
     system2("quarto", args = c("create", "project", "website", folder_name))
   }
   # Render qmd files to html.
-  qmd_files <- list.files(qmd_tmp_dir, full.names = TRUE)
+  qmd_files <- shQuote(normalizePath(list.files(qmd_tmp_dir, full.names = TRUE)))
   for (file in qmd_files) {
     cat("\n")
     cat("\n")
