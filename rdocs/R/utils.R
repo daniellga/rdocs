@@ -56,8 +56,8 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
   on.exit(unlink(qmd_tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
 
   files <- shQuote(normalizePath(files, mustWork = FALSE))
-  html_folder <- shQuote(normalizePath(paste(folder_name, "docs", sep = "/"), mustWork = FALSE))
   gh_url <- shQuote(normalizePath(gh_url, mustWork = FALSE))
+  html_folder <- normalizePath(paste(folder_name, "docs", sep = "/"), mustWork = FALSE)
 
   if (!file.exists(RDOCS_PATH)) {
     cat("Downloading rdocs binary")
@@ -76,6 +76,9 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
     system2("quarto", args = c("render", file))
   }
   # Copy all html files to html_folder.
+  if (!file.exists(html_folder)) {
+    dir.create(html_folder)
+  }
   html_files <- list.files(qmd_tmp_dir, pattern = "\\.html$", full.names = TRUE)
   file.copy(html_files, html_folder, overwrite = TRUE)
 }
