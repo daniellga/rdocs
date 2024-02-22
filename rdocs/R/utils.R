@@ -76,5 +76,6 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
     system2("quarto", args = c("render", file))
   }
   # Copy all html files to html_folder.
-  file.copy(qmd_tmp_dir, html_folder, overwrite = TRUE)
+  html_files <- list.files(qmd_tmp_dir, pattern = "\\.html$", full.names = TRUE)
+  file.copy(html_files, html_folder, overwrite = TRUE)
 }
