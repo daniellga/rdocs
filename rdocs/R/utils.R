@@ -57,7 +57,17 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
 
   files <- shQuote(normalizePath(files, mustWork = FALSE))
   html_folder <- shQuote(normalizePath(paste(folder_name, "docs", sep = "/"), mustWork = FALSE))
-  gh_url <- shQuote(gh_url)
+  gh_url <- shQuote(normalizePath(gh_url, mustWork = FALSE))
+
+  cat("\n")
+  cat(files)
+  cat("\n")
+  cat(html_folder)
+  cat("\n")
+  cat(gh_url)
+  cat("\n")
+  cat(qmd_tmp_dir)
+  cat("\n")
 
   if (!file.exists(RDOCS_PATH)) {
     cat("Downloading rdocs binary")
