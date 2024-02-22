@@ -1,6 +1,12 @@
-use std::{collections::HashMap, fs, fs::File, io::{BufRead, BufReader, Write}, path::PathBuf};
 use clap::Parser;
 use regex::Regex;
+use std::{
+    collections::HashMap,
+    fs,
+    fs::File,
+    io::{BufRead, BufReader, Write},
+    path::PathBuf,
+};
 
 /// Create docs from R scripts
 #[derive(Parser, Debug)]
@@ -16,9 +22,8 @@ struct Args {
 
     /// Source button in docs will point to files in this github url
     #[arg(short, long, default_value_t = String::from(""))]
-    gh_url: String
+    gh_url: String,
 }
-
 
 fn main() {
     let args = Args::parse();
@@ -49,6 +54,9 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
             let line_trimmed = line.trim_start();
 
             if let Some(stripped) = line_trimmed.strip_prefix("///") {
+                println!("last_line_was_comment: {:?}", skip_comment_chunk);
+                println!("skip_comment_chunk: {:?}", skip_comment_chunk);
+                println!("stripped:    {:?}", stripped);
                 counter += 1;
                 if skip_comment_chunk {
                     continue;
@@ -57,8 +65,11 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
                 // skip first space.
                 let filtered_line = stripped.strip_prefix(' ').unwrap_or(stripped).to_string();
 
+                println!("linha:    {:?}", filtered_line);
+
                 // associate with key in first line of comment chunk. Keys are identifiable by a 1 word line.
                 if !last_line_was_comment {
+                    println!("entrou no if");
                     key = filtered_line.clone();
                     // key should have only one word
                     if key.contains(' ') {
@@ -68,6 +79,7 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
                     hash.entry(key.clone()).or_insert_with(Vec::new);
                     last_line_was_comment = true;
                 } else {
+                    println!("entrou no else");
                     hash.get_mut(&key).unwrap().push(filtered_line);
                 }
             } else if let Some(stripped) = line_trimmed.strip_prefix("###") {
@@ -92,40 +104,43 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
                 } else {
                     hash.get_mut(&key).unwrap().push(filtered_line);
                 }
-            } else if !gh_url.is_empty() {
-                // add the source text. Code on github must be updated.
+            } else {
+                if !gh_url.is_empty() {
+                    // Regular expression to match function declarations
+                    let fn_declaration_regex = Regex::new(r"\s*fn\s+[a-zA-Z_]\w*\s*\(").unwrap();
+                    let function_declaration_regex =
+                        Regex::new(r"\s*function\s+[a-zA-Z_]\w*\s*\(").unwrap();
 
-                // Regular expression to match function declarations
-                let fn_declaration_regex = Regex::new(r"\s*fn\s+[a-zA-Z_]\w*\s*\(").unwrap();
-                let function_declaration_regex = Regex::new(r"\s*function\s+[a-zA-Z_]\w*\s*\(").unwrap();
+                    // add the source text. Code on github must be updated.
+                    if last_line_was_comment
+                        && (fn_declaration_regex.is_match(line_trimmed)
+                            || function_declaration_regex.is_match(line_trimmed))
+                    {
+                        let vec = hash.get_mut(&key).unwrap();
+                        let len = vec.len();
+                        let elem = &mut vec[len - counter as usize + 2];
+                        elem.pop();
 
-                if last_line_was_comment
-                    && (fn_declaration_regex.is_match(line_trimmed) || function_declaration_regex.is_match(line_trimmed))
-                {
-                    let vec = hash.get_mut(&key).unwrap();
-                    let len = vec.len();
-                    let elem = &mut vec[len - counter as usize + 2];
-                    elem.pop();
+                        let filename = files
+                            .iter()
+                            .find(|&x| x.contains(&key.to_lowercase()))
+                            .unwrap();
 
-                    let filename = files
-                        .iter()
-                        .find(|&x| x.contains(&key.to_lowercase()))
-                        .unwrap();
+                        // Remove a possible starting dot in path.
+                        let filename_str = if filename.strip_prefix(".").is_some() {
+                            &filename[1..]
+                        } else {
+                            &filename[..]
+                        };
 
-                    // Remove a possible starting dot in path.
-                    let filename_str = if filename.strip_prefix(".").is_some() {
-                        &filename[1..]
-                    } else {
-                        &filename[..]
-                    };
-
-                    let source = "<span style=\"float: right;\"> [source](".to_string()
-                        + gh_url.as_str()
-                        + filename_str
-                        + "#L"
-                        + &(line_counter + 1).to_string()
-                        + ") </span> \\";
-                    elem.push_str(&source);
+                        let source = "<span style=\"float: right;\"> [source](".to_string()
+                            + gh_url.as_str()
+                            + filename_str
+                            + "#L"
+                            + &(line_counter + 1).to_string()
+                            + ") </span> \\";
+                        elem.push_str(&source);
+                    }
                 }
 
                 counter = -1;
@@ -161,5 +176,7 @@ fn write_output_file(file_path: &PathBuf, key: &str, value: &[String]) {
 
     // Write the output text to the output file.
     let mut output_file = File::create(file_path).expect("could not create output_file");
-    output_file.write_all(output_text.as_bytes()).expect("could not write to output_file");
+    output_file
+        .write_all(output_text.as_bytes())
+        .expect("could not write to output_file");
 }
