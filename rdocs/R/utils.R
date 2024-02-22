@@ -60,12 +60,16 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
   gh_url <- shQuote(normalizePath(gh_url, mustWork = FALSE))
 
   cat("\n")
+  cat("1")
   cat(files)
   cat("\n")
+  cat("2")
   cat(html_folder)
   cat("\n")
+  cat("3")
   cat(gh_url)
   cat("\n")
+  cat("4")
   cat(qmd_tmp_dir)
   cat("\n")
 
@@ -76,13 +80,13 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
 
   # Create qmd files.
   system2(RDOCS_PATH, args = c("--files", files, "--docs-path", qmd_tmp_dir, "--gh-url", gh_url))
-  # Create quarto project if it doesn't exist.
-  if (!file.exists(folder_name)) {
-    system2("quarto", args = c("create", "project", "website", folder_name))
-  }
-  # Render qmd files to html.
-  qmd_files <- list.files(qmd_tmp_dir, full.names = TRUE)
-  for (file in qmd_files) {
-    system2("quarto", args = c("render", file, "--output-dir", html_folder))
-  }
+  ## Create quarto project if it doesn't exist.
+  # if (!file.exists(folder_name)) {
+  #  system2("quarto", args = c("create", "project", "website", folder_name))
+  # }
+  ## Render qmd files to html.
+  # qmd_files <- list.files(qmd_tmp_dir, full.names = TRUE)
+  # for (file in qmd_files) {
+  #  system2("quarto", args = c("render", file, "--output-dir", html_folder))
+  # }
 }
