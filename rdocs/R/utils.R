@@ -52,12 +52,9 @@ download_rdocs <- function() {
 }
 
 generate_docs <- function(files, folder_name = "docs", gh_url = "") {
-  qmd_tmp_dir <- tempfile()
-  on.exit(unlink(qmd_tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
-
   files <- shQuote(normalizePath(files, mustWork = FALSE))
   gh_url <- shQuote(normalizePath(gh_url, mustWork = FALSE))
-  qmd_folder <- shQuote(normalizePath(paste(folder_name, "qmd_docs", sep = "/"), mustWork = FALSE))
+  qmd_folder <- shQuote(normalizePath(paste(folder_name, "docs_qmd", sep = "/"), mustWork = FALSE))
 
   if (!file.exists(RDOCS_PATH)) {
     cat("Downloading rdocs binary")
