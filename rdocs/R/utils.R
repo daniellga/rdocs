@@ -84,9 +84,9 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
   if (!file.exists(folder_name)) {
     system2("quarto", args = c("create", "project", "website", folder_name))
   }
-  ## Render qmd files to html.
-  # qmd_files <- list.files(qmd_tmp_dir, full.names = TRUE)
-  # for (file in qmd_files) {
-  #  system2("quarto", args = c("render", file, "--output-dir", html_folder))
-  # }
+  # Render qmd files to html.
+  qmd_files <- list.files(qmd_tmp_dir, full.names = TRUE)
+  for (file in qmd_files) {
+    system2("quarto", args = c("render", file, "--output-dir", html_folder))
+  }
 }
