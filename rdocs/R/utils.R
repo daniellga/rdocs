@@ -71,7 +71,7 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
     system2("quarto", args = c("create", "project", "website", folder_name))
   }
   # Render.
-  # system2("quarto", args = c("render", "--execute-dir", folder_name))
+  system2("quarto", args = c("render", folder_name))
 }
 
 generate_website <- function() {
