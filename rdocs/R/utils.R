@@ -59,20 +59,6 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
   html_folder <- shQuote(normalizePath(paste(folder_name, "docs", sep = "/"), mustWork = FALSE))
   gh_url <- shQuote(normalizePath(gh_url, mustWork = FALSE))
 
-  cat("\n")
-  cat("1")
-  cat(files)
-  cat("\n")
-  cat("2")
-  cat(html_folder)
-  cat("\n")
-  cat("3")
-  cat(gh_url)
-  cat("\n")
-  cat("4")
-  cat(qmd_tmp_dir)
-  cat("\n")
-
   if (!file.exists(RDOCS_PATH)) {
     cat("Downloading rdocs binary")
     download_rdocs()
@@ -87,6 +73,11 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
   # Render qmd files to html.
   qmd_files <- list.files(qmd_tmp_dir, full.names = TRUE)
   for (file in qmd_files) {
+    cat("\n")
+    cat("\n")
+    cat(file)
+    cat("\n")
+    cat("\n")
     system2("quarto", args = c("render", file, "--output-dir", html_folder))
   }
 }
