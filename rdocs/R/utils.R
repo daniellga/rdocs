@@ -54,8 +54,8 @@ download_rdocs <- function() {
 generate_docs <- function(files, folder_name = "docs", gh_url = "") {
   files <- shQuote(normalizePath(files, mustWork = FALSE))
   gh_url <- shQuote(normalizePath(gh_url, mustWork = FALSE))
-  # qmd_folder <- shQuote(dir.create(folder_name, "docs_qmd", sep = "/"), mustWork = FALSE)
-  quarto_yaml_path <- dir.create(folder_name, "quarto.yaml")
+  # qmd_folder <- shQuote(file.path(folder_name, "docs_qmd", sep = "/"), mustWork = FALSE)
+  quarto_yaml_path <- file.path(folder_name, "quarto.yaml")
 
   if (!file.exists(RDOCS_PATH)) {
     cat("Downloading rdocs binary")
