@@ -63,6 +63,8 @@ generate_docs <- function(files, docs_folder = "./docs", gh_url = "", run_exampl
 
   # Create qmd files and build and render quarto project.
   system2(RDOCS_PATH, args = c("--files", files, "--docs-path", docs_folder, "--gh-url", gh_url))
+
+  invisible(NULL)
 }
 
 eval_examples <- function() {

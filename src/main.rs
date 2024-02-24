@@ -181,7 +181,7 @@ fn quarto_process(docs_path: &PathBuf) {
     let folder_name = docs_path.file_name().unwrap();
 
     // If the directory is already used as a quarto project, it should error but the rest of the program is run anyway.
-    let command = Command::new("quarto")
+    let _ = Command::new("quarto")
         .args([
             std::ffi::OsStr::new("create"),
             std::ffi::OsStr::new("project"),
@@ -195,32 +195,4 @@ fn quarto_process(docs_path: &PathBuf) {
         .args([std::ffi::OsStr::new("render"), folder_name])
         .current_dir(work_dir)
         .output();
-}
-
-// https://github.com/rust-lang/cargo/blob/fede83ccf973457de319ba6fa0e36ead454d2e20/src/cargo/util/paths.rs#L61
-pub fn normalize_path(path: PathBuf) -> PathBuf {
-    let mut components = path.components().peekable();
-    let mut ret = if let Some(c @ Component::Prefix(..)) = components.peek().cloned() {
-        components.next();
-        PathBuf::from(c.as_os_str())
-    } else {
-        PathBuf::new()
-    };
-
-    for component in components {
-        match component {
-            Component::Prefix(..) => unreachable!(),
-            Component::RootDir => {
-                ret.push(component.as_os_str());
-            }
-            Component::CurDir => {}
-            Component::ParentDir => {
-                ret.pop();
-            }
-            Component::Normal(c) => {
-                ret.push(c);
-            }
-        }
-    }
-    ret
 }
