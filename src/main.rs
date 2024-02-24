@@ -4,7 +4,7 @@ use std::{
     collections::HashMap,
     fs::{self, File},
     io::{BufRead, BufReader, Write},
-    path::{Component, PathBuf},
+    path::PathBuf,
     process::Command,
 };
 
@@ -179,6 +179,10 @@ fn write_output_file(file_path: &PathBuf, key: &str, value: &[String]) {
 fn quarto_process(docs_path: &PathBuf) {
     let work_dir = docs_path.parent().unwrap();
     let folder_name = docs_path.file_name().unwrap();
+
+    println!("oioioi");
+    println!("{:?}", work_dir);
+    println!("{:?}", folder_name);
 
     // If the directory is already used as a quarto project, it should error but the rest of the program is run anyway.
     let _ = Command::new("quarto")
