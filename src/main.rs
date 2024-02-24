@@ -28,8 +28,8 @@ struct Args {
 fn main() {
     let args = Args::parse();
     let files = args.files;
-    let gh_url = args.gh_url;
     let docs_path = PathBuf::from(args.docs_path);
+    let gh_url = args.gh_url;
 
     let mut hash: HashMap<String, Vec<String>> = HashMap::new();
 
