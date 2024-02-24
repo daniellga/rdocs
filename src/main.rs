@@ -2,10 +2,10 @@ use clap::Parser;
 use regex::Regex;
 use std::{
     collections::HashMap,
-    fs,
-    fs::File,
+    fs::{self, File},
     io::{BufRead, BufReader, Write},
     path::PathBuf,
+    process::Command,
 };
 
 /// Create docs from R scripts
@@ -29,12 +29,13 @@ fn main() {
     let args = Args::parse();
     let files = args.files;
     let gh_url = args.gh_url;
-    let docs_path = PathBuf::from(args.docs_path);
+    let docs_path = PathBuf::from(args.docs_path).canonicalize().unwrap();
 
     let mut hash: HashMap<String, Vec<String>> = HashMap::new();
     generate_r_docs(files, gh_url, &mut hash);
+    quarto_process(&docs_path);
 
-    output_file(hash, docs_path)
+    output_file(hash, &docs_path)
 }
 
 // Currently it may give a bug if 2 methods impl for the same struct are on different files,
@@ -144,7 +145,7 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
     }
 }
 
-fn output_file(hash: HashMap<String, Vec<String>>, docs_path: PathBuf) {
+fn output_file(hash: HashMap<String, Vec<String>>, docs_path: &PathBuf) {
     for (key, value) in hash {
         let key_lowercase = key.to_lowercase();
 
@@ -152,7 +153,7 @@ fn output_file(hash: HashMap<String, Vec<String>>, docs_path: PathBuf) {
         let docs_file_path = docs_path.join(&key_lowercase).with_extension("qmd");
 
         // Create the folder if it doesn't exist.
-        fs::create_dir_all(docs_path.clone()).expect("directory could not be created");
+        fs::create_dir_all(docs_path).expect("directory could not be created");
 
         // Write the output text to the output file.
         write_output_file(&docs_file_path, &key, &value);
@@ -172,4 +173,28 @@ fn write_output_file(file_path: &PathBuf, key: &str, value: &[String]) {
     output_file
         .write_all(output_text.as_bytes())
         .expect("could not write to output_file");
+}
+
+// Create a quarto project and render.
+fn quarto_process(docs_path: &PathBuf) {
+    let work_dir = docs_path.parent().unwrap();
+    let folder_name = docs_path.file_name().unwrap();
+
+    // If the directory is already used as a quarto project, it should error but the rest of the program is run.
+    let command = Command::new("quarto")
+        .arg("create")
+        .arg("website")
+        .arg(folder_name)
+        .current_dir(work_dir)
+        .spawn();
+
+    if command.is_err() {
+        print!("A quarto project already existed. Thus, project creation was skipped.")
+    }
+
+    let _ = Command::new("quarto")
+        .arg("render")
+        .arg(folder_name)
+        .current_dir(work_dir)
+        .spawn();
 }
