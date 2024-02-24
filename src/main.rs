@@ -32,10 +32,10 @@ fn main() {
     let docs_path = PathBuf::from(args.docs_path).canonicalize().unwrap();
 
     let mut hash: HashMap<String, Vec<String>> = HashMap::new();
-    generate_r_docs(files, gh_url, &mut hash);
-    quarto_process(&docs_path);
 
-    output_file(hash, &docs_path)
+    generate_r_docs(files, gh_url, &mut hash);
+    output_file(hash, &docs_path);
+    quarto_process(&docs_path);
 }
 
 // Currently it may give a bug if 2 methods impl for the same struct are on different files,
@@ -180,6 +180,9 @@ fn quarto_process(docs_path: &PathBuf) {
     let work_dir = docs_path.parent().unwrap();
     let folder_name = docs_path.file_name().unwrap();
 
+    print!("oioioioi");
+    println!("{:?}", work_dir);
+    println!("{:?}", folder_name);
     // If the directory is already used as a quarto project, it should error but the rest of the program is run.
     let command = Command::new("quarto")
         .args([
