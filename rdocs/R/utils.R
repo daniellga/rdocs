@@ -55,7 +55,7 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
   files <- shQuote(normalizePath(files, mustWork = FALSE))
   gh_url <- shQuote(normalizePath(gh_url, mustWork = FALSE))
   # qmd_folder <- shQuote(file.path(folder_name, "docs_qmd", sep = "/"), mustWork = FALSE)
-  quarto_yaml_path <- file.path(folder_name, "quarto.yaml")
+  quarto_check_path <- file.path(folder_name, ".quarto")
 
   if (!file.exists(RDOCS_PATH)) {
     cat("Downloading rdocs binary")
@@ -65,7 +65,7 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "") {
   # Create qmd files.
   system2(RDOCS_PATH, args = c("--files", files, "--docs-path", folder_name, "--gh-url", gh_url))
   # Create quarto project if it doesn't exist.
-  if (!file.exists(quarto_yaml_path)) {
+  if (!file.exists(quarto_check_path)) {
     system2("quarto", args = c("create", "project", "website", folder_name))
   }
   # Render.
