@@ -182,19 +182,20 @@ fn quarto_process(docs_path: &PathBuf) {
 
     // If the directory is already used as a quarto project, it should error but the rest of the program is run.
     let command = Command::new("quarto")
-        .arg("create")
-        .arg("website")
-        .arg(folder_name)
+        .args([
+            std::ffi::OsStr::new("create"),
+            std::ffi::OsStr::new("website"),
+            folder_name,
+        ])
         .current_dir(work_dir)
-        .spawn();
+        .output();
 
     if command.is_err() {
         print!("A quarto project already existed. Thus, project creation was skipped.")
     }
 
     let _ = Command::new("quarto")
-        .arg("render")
-        .arg(folder_name)
+        .args([std::ffi::OsStr::new("render"), folder_name])
         .current_dir(work_dir)
-        .spawn();
+        .output();
 }
