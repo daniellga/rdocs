@@ -4,7 +4,7 @@ use std::{
     collections::HashMap,
     fs::{self, File},
     io::{BufRead, BufReader, Write},
-    path::PathBuf,
+    path::{Component, Path, PathBuf},
     process::Command,
 };
 
@@ -27,8 +27,17 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-    let files = args.files;
-    let docs_path = PathBuf::from(args.docs_path);
+    let files: Vec<String> = args
+        .files
+        .iter()
+        .map(|x| {
+            normalize_path(Path::new(x))
+                .to_str()
+                .expect("file path not correct.")
+                .to_string()
+        })
+        .collect();
+    let docs_path = normalize_path(Path::new(&args.docs_path));
     let gh_url = args.gh_url;
 
     let mut hash: HashMap<String, Vec<String>> = HashMap::new();
@@ -195,4 +204,31 @@ fn quarto_process(docs_path: &PathBuf) {
         .args([std::ffi::OsStr::new("render"), folder_name])
         .current_dir(work_dir)
         .output();
+}
+
+pub fn normalize_path(path: &Path) -> PathBuf {
+    let mut components = path.components().peekable();
+    let mut ret = if let Some(c @ Component::Prefix(..)) = components.peek().cloned() {
+        components.next();
+        PathBuf::from(c.as_os_str())
+    } else {
+        PathBuf::new()
+    };
+
+    for component in components {
+        match component {
+            Component::Prefix(..) => unreachable!(),
+            Component::RootDir => {
+                ret.push(component.as_os_str());
+            }
+            Component::CurDir => {}
+            Component::ParentDir => {
+                ret.pop();
+            }
+            Component::Normal(c) => {
+                ret.push(c);
+            }
+        }
+    }
+    ret
 }
