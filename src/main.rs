@@ -2,7 +2,7 @@ use clap::Parser;
 use regex::Regex;
 use std::{
     collections::HashMap,
-    fs::{self, File},
+    fs::File,
     io::{BufRead, BufReader, Write},
     path::{Component, Path, PathBuf},
     process::Command,
@@ -13,15 +13,15 @@ use std::{
 #[command(author, version, about, long_about = None)]
 struct Args {
     /// Relative path to the files
-    #[arg(short, long, num_args = 1..)]
+    #[arg(long, num_args = 1..)]
     files: Vec<String>,
 
     /// Docs will be created in this path
-    #[arg(short, long)]
-    docs_path: String,
+    #[arg(long)]
+    folder_name: String,
 
     /// Source button in docs will point to files in this github url
-    #[arg(short, long, default_value_t = String::from(""))]
+    #[arg(long, default_value_t = String::from(""))]
     gh_url: String,
 }
 
@@ -37,14 +37,14 @@ fn main() {
                 .to_string()
         })
         .collect();
-    let docs_path = normalize_path(Path::new(&args.docs_path));
+    let folder_name = args.folder_name;
     let gh_url = args.gh_url;
 
     let mut hash: HashMap<String, Vec<String>> = HashMap::new();
 
     generate_r_docs(files, gh_url, &mut hash);
-    output_file(hash, &docs_path);
-    quarto_process(&docs_path);
+    output_file(hash, &folder_name);
+    quarto_process(&folder_name);
 }
 
 // Currently it may give a bug if 2 methods impl for the same struct are on different files,
@@ -154,15 +154,17 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
     }
 }
 
-fn output_file(hash: HashMap<String, Vec<String>>, docs_path: &PathBuf) {
+fn output_file(hash: HashMap<String, Vec<String>>, folder_name: &str) {
     for (key, value) in hash {
         let key_lowercase = key.to_lowercase();
 
         // Construct the output file path as the input file path with a .qmd extension.
-        let docs_file_path = docs_path.join(&key_lowercase).with_extension("qmd");
+        let docs_file_path = Path::new(folder_name)
+            .join(&key_lowercase)
+            .with_extension("qmd");
 
         // Create the folder if it doesn't exist.
-        fs::create_dir_all(docs_path).expect("directory could not be created");
+        std::fs::create_dir_all(folder_name).expect("directory could not be created");
 
         // Write the output text to the output file.
         write_output_file(&docs_file_path, &key, &value);
@@ -185,24 +187,17 @@ fn write_output_file(file_path: &PathBuf, key: &str, value: &[String]) {
 }
 
 // Create a quarto project and render.
-fn quarto_process(docs_path: &PathBuf) {
-    let work_dir = docs_path.parent().unwrap();
-    let folder_name = docs_path.file_name().unwrap();
+fn quarto_process(folder_name: &str) {
+    println!("oioioioioi");
+    println!("{:?}", folder_name);
 
     // If the directory is already used as a quarto project, it should error but the rest of the program is run anyway.
     let _ = Command::new("quarto")
-        .args([
-            std::ffi::OsStr::new("create"),
-            std::ffi::OsStr::new("project"),
-            std::ffi::OsStr::new("website"),
-            folder_name,
-        ])
-        .current_dir(work_dir)
+        .args(["create", "project", "website", folder_name])
         .output();
 
     let _ = Command::new("quarto")
-        .args([std::ffi::OsStr::new("render"), folder_name])
-        .current_dir(work_dir)
+        .args(["render", folder_name])
         .output();
 }
 
