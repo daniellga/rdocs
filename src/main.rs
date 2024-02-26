@@ -8,21 +8,25 @@ use std::{
     process::Command,
 };
 
-/// Create docs from R scripts
+/// Create quarto docs from code comments. The command must be called in the package's main folder.
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    /// Relative path to the files
+    /// Relative path to the files.
     #[arg(long, num_args = 1..)]
     files: Vec<String>,
 
-    /// Docs will be created in this path
+    /// Docs will be created in this path.
     #[arg(long)]
     folder_name: String,
 
-    /// Source button in docs will point to files in this github url
+    /// Source button in docs will point to files in this github url.
     #[arg(long, default_value_t = String::from(""))]
     gh_url: String,
+
+    /// Run R examples within code blocks.
+    #[arg(long, default_value_t = false)]
+    run_examples: bool,
 }
 
 fn main() {
@@ -39,31 +43,53 @@ fn main() {
         .collect();
     let folder_name = args.folder_name;
     let gh_url = args.gh_url;
+    let run_examples = args.run_examples;
 
     let mut hash: HashMap<String, Vec<String>> = HashMap::new();
+    let mut examples: Vec<String> = Vec::new();
 
-    generate_r_docs(files, gh_url, &mut hash);
-    output_file(hash, &folder_name);
-    quarto_process(&folder_name);
+    generate_r_docs(
+        files,
+        gh_url.as_str(),
+        run_examples,
+        &mut hash,
+        &mut examples,
+    );
+    output_file(hash, folder_name.as_str());
+    quarto_process(folder_name.as_str());
+    if run_examples {
+        eval_examples(examples);
+    }
 }
 
 // Currently it may give a bug if 2 methods impl for the same struct are on different files,
 // depending on the order of the files on the list below. Try to reorder the vec in a way that
 // if the code chunk contains "# Methods" it will be swapped to the vec's first position.
-fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String, Vec<String>>) {
+fn generate_r_docs(
+    files: Vec<String>,
+    gh_url: &str,
+    run_examples: bool,
+    hash: &mut HashMap<String, Vec<String>>,
+    examples: &mut Vec<String>,
+) {
     for file in &files {
         // Read the input file and filter to keep only lines starting with "###"
         let input_file = File::open(file).unwrap();
         let mut key = String::new();
         let mut last_line_was_comment = false;
         let mut skip_comment_chunk = false;
+        let mut inside_code_chunk = false;
 
         // counts the line in a code chunk
         let mut counter: i32 = -1;
         for (line_counter, line) in BufReader::new(input_file).lines().flatten().enumerate() {
             let line_trimmed = line.trim_start();
 
-            if let Some(stripped) = line_trimmed.strip_prefix("///") {
+            // skip non-commented lines.
+            if let Some(stripped) = line_trimmed
+                .strip_prefix("///")
+                .or_else(|| line_trimmed.strip_prefix("###"))
+            {
                 counter += 1;
                 if skip_comment_chunk {
                     continue;
@@ -83,28 +109,21 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
                     hash.entry(key.clone()).or_insert_with(Vec::new);
                     last_line_was_comment = true;
                 } else {
-                    hash.get_mut(&key).unwrap().push(filtered_line);
-                }
-            } else if let Some(stripped) = line_trimmed.strip_prefix("###") {
-                counter += 1;
-                if skip_comment_chunk {
-                    continue;
-                }
+                    if run_examples {
+                        let filtered_line_trimmed = filtered_line.trim_end();
 
-                // skip first space.
-                let filtered_line = stripped.strip_prefix(' ').unwrap_or(stripped).to_string();
-
-                // associate with key in first line of comment chunk. Keys are identifiable by a 1 word line.
-                if !last_line_was_comment {
-                    key = filtered_line.clone();
-                    // key should have only one word
-                    if key.contains(' ') {
-                        skip_comment_chunk = true;
-                        continue;
+                        if inside_code_chunk {
+                            if filtered_line_trimmed == "```" {
+                                examples.push("rm(list = ls())".to_string());
+                                inside_code_chunk = false;
+                            } else {
+                                examples.push(filtered_line.clone());
+                            }
+                        } else if filtered_line_trimmed == "```r" {
+                            inside_code_chunk = true;
+                        }
                     }
-                    hash.entry(key.clone()).or_insert_with(Vec::new);
-                    last_line_was_comment = true;
-                } else {
+
                     hash.get_mut(&key).unwrap().push(filtered_line);
                 }
             } else {
@@ -137,7 +156,7 @@ fn generate_r_docs(files: Vec<String>, gh_url: String, hash: &mut HashMap<String
                         };
 
                         let source = "<span style=\"float: right;\"> [source](".to_string()
-                            + gh_url.as_str()
+                            + gh_url
                             + filename_str
                             + "#L"
                             + &(line_counter + 1).to_string()
@@ -166,31 +185,39 @@ fn output_file(hash: HashMap<String, Vec<String>>, folder_name: &str) {
         // Create the folder if it doesn't exist.
         std::fs::create_dir_all(folder_name).expect("directory could not be created");
 
+        let title = format!("title: {}", key);
+        let text = ["---", &title, "---"].join("\n");
+
+        // Construct the final output text.
+        let output_text = [text, value.join("\n")].join("\n\n");
+
         // Write the output text to the output file.
-        write_output_file(&docs_file_path, &key, &value);
+        let mut output_file = File::create(&docs_file_path).expect("could not create output_file");
+        output_file
+            .write_all(output_text.as_bytes())
+            .expect("could not write to output_file");
     }
 }
 
-fn write_output_file(file_path: &PathBuf, key: &str, value: &[String]) {
-    // Construct the header
-    let title = format!("title: {}", key);
-    let text = ["---", &title, "---"].join("\n");
+fn eval_examples(examples: Vec<String>) {
+    // Construct the output text.
+    let pkg_name_string = std::env::current_dir().unwrap();
+    let pkg_name = pkg_name_string
+        .as_path()
+        .file_name()
+        .unwrap()
+        .to_str()
+        .unwrap();
+    let pkg_call = ["library", pkg_name].join(" ");
+    let output_text = [pkg_call.as_str(), examples.join(";").as_str()].join(";");
 
-    // Construct the final output text.
-    let output_text = [text, value.join("\n")].join("\n\n");
-
-    // Write the output text to the output file.
-    let mut output_file = File::create(file_path).expect("could not create output_file");
-    output_file
-        .write_all(output_text.as_bytes())
-        .expect("could not write to output_file");
+    let _ = Command::new("Rscript")
+        .args(["--vanilla", "-e", output_text.as_str()])
+        .output();
 }
 
 // Create a quarto project and render.
 fn quarto_process(folder_name: &str) {
-    println!("oioioioioi");
-    println!("{:?}", folder_name);
-
     // If the directory is already used as a quarto project, it should error but the rest of the program is run anyway.
     let _ = Command::new("quarto")
         .args(["create", "project", "website", folder_name])
