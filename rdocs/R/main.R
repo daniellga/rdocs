@@ -96,7 +96,7 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "", run_examples
     download_rdocs()
   }
 
-  run_examples <- ifelse(isTRUE(run_examples), "--run-examples", NULL)
+  run_examples <- if (isTRUE(run_examples)) "--run-examples" else NULL
 
   # Create qmd files and build and render quarto project.
   system2(RDOCS_PATH, args = c("--files", files, "--folder-name", folder_name, "--gh-url", gh_url, run_examples))
