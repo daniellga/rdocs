@@ -1,7 +1,8 @@
 ## rdocs: Simple Quarto documentation for R packages 
 
-Allows to create quarto markdown documentation (.qmd) from `///` and `###` tokens in text files. Documentation can be created, for example, from `.R`, `.rs` and `cpp` files. \
-The package will search for these tokens in these files and generate a quarto website.
+Allows to create quarto markdown documentation (.qmd) from `///` and `###` tokens in text files. Documentation can be created, for example, from `.R`, `.rs` and 
+`.cpp` files. \
+The package will search for these tokens in the files and generate a quarto website.
 
 ## Instalation
 

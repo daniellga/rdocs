@@ -42,6 +42,7 @@ fn main() {
         })
         .collect();
     let folder_name = args.folder_name;
+    let folder_name_hidden = [".", folder_name.as_str()].join("");
     let gh_url = args.gh_url;
     let run_examples = args.run_examples;
 
@@ -55,8 +56,8 @@ fn main() {
         &mut hash,
         &mut examples,
     );
-    output_file(hash, folder_name.as_str());
-    quarto_process(folder_name.as_str());
+    output_file(hash, folder_name_hidden.as_str());
+    quarto_process(folder_name.as_str(), folder_name_hidden.as_str());
     if run_examples {
         eval_examples(examples);
     }
@@ -173,17 +174,17 @@ fn generate_r_docs(
     }
 }
 
-fn output_file(hash: HashMap<String, Vec<String>>, folder_name: &str) {
+fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
     for (key, value) in hash {
         let key_lowercase = key.to_lowercase();
 
         // Construct the output file path as the input file path with a .qmd extension.
-        let docs_file_path = Path::new(folder_name)
+        let docs_file_path = Path::new(folder_name_hidden)
             .join(&key_lowercase)
             .with_extension("qmd");
 
         // Create the folder if it doesn't exist.
-        std::fs::create_dir_all(folder_name).expect("directory could not be created");
+        std::fs::create_dir_all(folder_name_hidden).expect("directory could not be created");
 
         let title = format!("title: {}", key);
         let text = ["---", &title, "---"].join("\n");
@@ -217,15 +218,13 @@ fn eval_examples(examples: Vec<String>) {
 }
 
 // Create a quarto project and render.
-fn quarto_process(folder_name: &str) {
-    let folder_name_ = [".", folder_name].join("");
-    let folder_name_hidden = folder_name_.as_str();
+fn quarto_process(folder_name: &str, folder_name_hidden: &str) {
     // If the directory is already used as a quarto project, it should error but the rest of the program is run anyway.
     let _ = Command::new("quarto")
         .args(["create", "project", "website", folder_name_hidden])
         .output();
 
-    let output_path = Path::new("../docs");
+    let output_path = Path::new("../").join(folder_name);
     let _ = Command::new("quarto")
         .args([
             "render",
