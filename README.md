@@ -75,6 +75,6 @@ rdocs::generate_docs("./testscript.R")
 
 The website will be generated on the current working directory.
 
-This library's documentation[documentation](https://daniellga.github.io/rdocs/) was created using rdocs.
+This library's [documentation](https://daniellga.github.io/rdocs/) was created using rdocs.
 
 
