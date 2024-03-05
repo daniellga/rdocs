@@ -16,7 +16,7 @@ struct Args {
     #[arg(long, num_args = 1..)]
     files: Vec<String>,
 
-    /// Docs will be created in this path.
+    /// Name of the documents folder.
     #[arg(long)]
     folder_name: String,
 
@@ -218,13 +218,21 @@ fn eval_examples(examples: Vec<String>) {
 
 // Create a quarto project and render.
 fn quarto_process(folder_name: &str) {
+    let folder_name_ = [".", folder_name].join("");
+    let folder_name_hidden = folder_name_.as_str();
     // If the directory is already used as a quarto project, it should error but the rest of the program is run anyway.
     let _ = Command::new("quarto")
-        .args(["create", "project", "website", folder_name])
+        .args(["create", "project", "website", folder_name_hidden])
         .output();
 
+    let output_path = Path::new("../docs");
     let _ = Command::new("quarto")
-        .args(["render", folder_name, "--output-dir", "./"])
+        .args([
+            "render",
+            folder_name,
+            "--output-dir",
+            output_path.to_str().unwrap(),
+        ])
         .output();
 }
 
