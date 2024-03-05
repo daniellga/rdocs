@@ -66,7 +66,3 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "", run_examples
 
   invisible(NULL)
 }
-
-eval_examples <- function() {
-
-}
