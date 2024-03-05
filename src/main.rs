@@ -228,7 +228,7 @@ fn quarto_process(folder_name: &str, folder_name_hidden: &str) {
     let _ = Command::new("quarto")
         .args([
             "render",
-            folder_name,
+            folder_name_hidden,
             "--output-dir",
             output_path.to_str().unwrap(),
         ])
