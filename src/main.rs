@@ -177,15 +177,14 @@ fn generate_r_docs(
 fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
     for (key, value) in hash {
         let key_lowercase = key.to_lowercase();
+        let contents_folder = Path::new(folder_name_hidden).join("contents");
 
         // Construct the output file path as the input file path with a .qmd extension.
-        let docs_file_path = Path::new(folder_name_hidden)
-            .join("contents")
-            .join(&key_lowercase)
-            .with_extension("qmd");
+        let docs_file_path = contents_folder.join(&key_lowercase).with_extension("qmd");
 
-        // Create the folder if it doesn't exist.
+        // Create the folders if they don't exist.
         std::fs::create_dir_all(folder_name_hidden).expect("directory could not be created");
+        std::fs::create_dir_all(contents_folder).expect("directory could not be created");
 
         let title = format!("title: {}", key);
         let text = ["---", &title, "---"].join("\n");
