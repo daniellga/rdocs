@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "_docs",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "functions.html",
+    "href": "functions.html",
+    "title": "Functions",
+    "section": "",
+    "text": "generate_docs(files, folder_name = \"docs\", gh_url = \"\", run_examples = FALSE)\n\nGenerate a quarto website from lines starting with ### or /// that are right above function declarations.\nThe website folder is created in the current working directory.\nThe first line of the block is important, since the name of the variable will be used to group functions into the same one-worded section. This is useful, for example, when working using an OOP approach. For now, to avoid any bugs, it is important that all grouped functions are on the same file.\nThe user is free to create its headings, line breaks and make use of all other markdown utilities.\nAll R code identified by “r\" will be evaluated in a separate R session. If you don't want a certain part of the code to be run, it will be needed to comment it or avoid the \"r” representation. If you don’t want to evaluate the code at all, use run_examples = FALSE, which is the default.\n\n\n\n\nfiles\nThe files that will be used to create the .qmd documentation.\nfolder_name\nName of the folder which will store the website.\n\ngh_url\nA github url indicating where the documented files will be stored. It will create a link to the source code for each function. The default value will not create such links.\n\nrun_examples\nIf TRUE, All R code identified in an r code block will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the r code representation in markdown.\n\n\n\n\n\nrdocs::generate_docs(files = \"./rdocs/R/main.R\", folder_name = \"docs\", gh_url = \"https://github.com/daniellga/rdocs/tree/main/rdocs/R\", run_examples = FALSE)"
+  },
+  {
+    "objectID": "functions.html#generate_docs",
+    "href": "functions.html#generate_docs",
+    "title": "Functions",
+    "section": "",
+    "text": "generate_docs(files, folder_name = \"docs\", gh_url = \"\", run_examples = FALSE)\n\nGenerate a quarto website from lines starting with ### or /// that are right above function declarations.\nThe website folder is created in the current working directory.\nThe first line of the block is important, since the name of the variable will be used to group functions into the same one-worded section. This is useful, for example, when working using an OOP approach. For now, to avoid any bugs, it is important that all grouped functions are on the same file.\nThe user is free to create its headings, line breaks and make use of all other markdown utilities.\nAll R code identified by “r\" will be evaluated in a separate R session. If you don't want a certain part of the code to be run, it will be needed to comment it or avoid the \"r” representation. If you don’t want to evaluate the code at all, use run_examples = FALSE, which is the default.\n\n\n\n\nfiles\nThe files that will be used to create the .qmd documentation.\nfolder_name\nName of the folder which will store the website.\n\ngh_url\nA github url indicating where the documented files will be stored. It will create a link to the source code for each function. The default value will not create such links.\n\nrun_examples\nIf TRUE, All R code identified in an r code block will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the r code representation in markdown.\n\n\n\n\n\nrdocs::generate_docs(files = \"./rdocs/R/main.R\", folder_name = \"docs\", gh_url = \"https://github.com/daniellga/rdocs/tree/main/rdocs/R\", run_examples = FALSE)"
+  }
+]
