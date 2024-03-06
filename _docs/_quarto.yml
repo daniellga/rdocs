@@ -2,18 +2,25 @@ project:
   type: website
 
 website:
-  title: "_docs"
+  title: "rdocs"
   navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+    tools:
+      - icon: github
+        href: https://github.com/daniellga/rdocs
+        text: GitHub
+  sidebar:
+    style: "docked"
+    contents:
+      - section: "Documentation"
+        contents: functions.html 
 
 format:
   html:
-    theme: cosmo
+    theme:
+      dark: darkly
+      light: flatly
     css: styles.css
     toc: true
-
-
+    grid:
+      body-width: 1000px
 
