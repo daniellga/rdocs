@@ -12,7 +12,7 @@ website:
     style: "docked"
     contents:
       - section: "Documentation"
-        contents: ./functions.html 
+        contents: contents/*
 
 format:
   html:

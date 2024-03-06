@@ -180,6 +180,7 @@ fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
 
         // Construct the output file path as the input file path with a .qmd extension.
         let docs_file_path = Path::new(folder_name_hidden)
+            .join("contents")
             .join(&key_lowercase)
             .with_extension("qmd");
 
