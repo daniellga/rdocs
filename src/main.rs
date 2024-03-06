@@ -42,7 +42,7 @@ fn main() {
         })
         .collect();
     let folder_name = args.folder_name;
-    let folder_name_hidden = [".", folder_name.as_str()].join("");
+    let folder_name_hidden = ["_", folder_name.as_str()].join("");
     let gh_url = args.gh_url;
     let run_examples = args.run_examples;
 
