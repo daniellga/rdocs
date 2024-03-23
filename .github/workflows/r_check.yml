@@ -7,6 +7,10 @@ on:
     branches: [ main ]
     paths:
       - rdocs/**
+  workflow_run:
+    workflows: ["CI release"]
+    types:
+      - completed
 
 name: R-CMD-check
 

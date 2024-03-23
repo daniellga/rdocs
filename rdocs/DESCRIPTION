@@ -1,6 +1,6 @@
 Package: rdocs
 Title: Create Quarto documentation for R files from comments
-Version: 0.1.20
+Version: 0.1.22
 Authors@R: 
     person("Daniel", "Gurgel", , "daniellga@gmail.com", role = c("aut", "cre"))
 Description: Generate R documentation in Quarto format based on comments in code files.
