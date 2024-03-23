@@ -47,13 +47,13 @@ jobs:
       - name: Set up R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          working-directory: ./r-harmonium
+          working-directory: ./rdocs
           extra-packages: any::rcmdcheck
           needs: check
 
       - name: Run R CMD check
         uses: r-lib/actions/check-r-package@v2
         with:
-          working-directory: ./r-harmonium
+          working-directory: ./rdocs
           args: 'c("--no-manual", "--no-build-vignettes", "--no-codoc", "--no-examples", "--no-tests")'
           error-on: '"error"'
