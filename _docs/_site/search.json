@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "contents/functions.html",
+    "href": "contents/functions.html",
+    "title": "Functions",
+    "section": "",
+    "text": "download_rdocs()\n\nForces the update of the cached binary.\nUse this when the package version has been updated and a new updated release is available.\n\n\n\nrdocs::download_rdocs()"
+  },
+  {
+    "objectID": "contents/functions.html#generate_docs",
+    "href": "contents/functions.html#generate_docs",
+    "title": "Functions",
+    "section": "generate_docs",
+    "text": "generate_docs\ngenerate_docs(files, folder_name = \"docs\", gh_url = \"\", run_examples = FALSE)\n\nGenerate a quarto website from lines starting with ### or /// that are right above function declarations.\nThe website folder is created in the current working directory.\nThe first line of the block is important, since the name of the variable will be used to group functions into the same one-worded section. This is useful, for example, when working using an OOP approach. For now, to avoid any bugs, it is important that all grouped functions are on the same file.\nThe user is free to create its headings, line breaks and make use of all other markdown utilities.\nAll R code identified by r code markdown blocks will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the code block representation. If you don’t want to evaluate the code at all, use run_examples = FALSE, which is the default.\n\n\nArguments\n\nfiles\nThe files that will be used to create the .qmd documentation.\nfolder_name\nName of the folder which will store the website.\n\ngh_url\nA github url indicating where the documented files will be stored. It will create a link to the source code for each function. The default value will not create such links.\n\nrun_examples\nIf TRUE, All R code identified in an r code block will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the r code representation in markdown.\n\n\n\n\nExamples\nrdocs::generate_docs(files = \"./rdocs/R/main.R\", folder_name = \"docs\", gh_url = \"https://github.com/daniellga/rdocs/tree/main/rdocs/R\", run_examples = FALSE)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "rdocs",
+    "section": "",
+    "text": "Allows to create quarto markdown documentation (.qmd) from /// and ### tokens in text files. Documentation can be created, for example, from .R, .rs and .cpp files.\nThe package will search for these tokens in the files and generate a quarto website.\nThis library’s documentation was created using rdocs."
+  },
+  {
+    "objectID": "index.html#rdocs-simple-quarto-documentation-for-r-packages",
+    "href": "index.html#rdocs-simple-quarto-documentation-for-r-packages",
+    "title": "rdocs",
+    "section": "",
+    "text": "Allows to create quarto markdown documentation (.qmd) from /// and ### tokens in text files. Documentation can be created, for example, from .R, .rs and .cpp files.\nThe package will search for these tokens in the files and generate a quarto website.\nThis library’s documentation was created using rdocs."
+  },
+  {
+    "objectID": "index.html#instalation",
+    "href": "index.html#instalation",
+    "title": "rdocs",
+    "section": "Instalation",
+    "text": "Instalation\nInstall Quarto and add it to PATH.\nInstall the package from github:\nremotes::install_github(\"daniellga/rdocs\", subdir = \"rdocs\")"
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "rdocs",
+    "section": "Usage",
+    "text": "Usage\nAn example is showed below, where 2 distinct functions will be documented on the same section, named HFft. It generates a quarto website from lines starting with ### or /// that are right above function declarations.\nThe website folder is created in the current working directory.\nThe first line of the block is important, since the name of the variable will be used to group functions into the same one-worded section. This is useful, for example, when working using an OOP approach. For now, to avoid any bugs, it is important that all grouped functions are on the same file.\nThe user is free to create its headings, line breaks and make use of all other markdown utilities.\nAll R code identified by r code markdown blocks will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the code block representation. If you don’t want to evaluate the code at all, use run_examples = FALSE, which is the default.\ntestscript.rs\n/// HFft\n/// ## fft\n///\n/// `fft() -&gt; HArray` \\\n///\n/// Computes the fast fourier transform of the `HArray`. \\\n///\n/// #### Returns\n///\n/// An `HArray`. \\\n///\n/// #### Examples\n///\n/// ```r\n/// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\n/// dtype = HDataType$float32\n/// HArray$new_from_values(arr, dtype)\n/// HFft$fft(harray)\n/// ```\n///\nfn fft(harray: &HArray) -&gt; HArray {\n    HArray(harray.0.fft())\n}\n\n/// HFft\n/// ## fft_mut\n///\n/// `fft_mut()` \\\n///\n/// Computes the fast fourier transform of the `HArray`. \\\n/// The operation is done in-place. \\\n\n/// #### Examples\n///\n/// ```r\n/// arr = array(c(1,2,3,4,5,6,7,8,9,10,11,12), c(3,4))\n/// dtype = HDataType$float32\n/// HArray$new_from_values(arr, dtype)\n/// HFft$fft_mut(harray)\n/// ```\n///\nfn fft_mut(harray: &mut HArray) {\n    let inner_mut = harray.get_inner_mut();\n    inner_mut.fft_mut()\n}\nrdocs::generate_docs(\"./testscript.R\")\nThe website will be generated on the current working directory."
+  },
+  {
+    "objectID": "contents/functions.html#download_rdocs",
+    "href": "contents/functions.html#download_rdocs",
+    "title": "Functions",
+    "section": "",
+    "text": "download_rdocs()\n\nForces the update of the cached binary.\nUse this when the package version has been updated and a new updated release is available.\n\n\n\nrdocs::download_rdocs()"
+  }
+]

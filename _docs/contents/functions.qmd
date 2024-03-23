@@ -2,6 +2,19 @@
 title: Functions
 ---
 
+## download_rdocs
+
+`download_rdocs()` \
+
+Forces the update of the cached binary. \
+Use this when the package version has been updated and a new updated release is available. \
+
+#### Examples
+
+```r
+rdocs::download_rdocs()
+```
+
 ## generate_docs
 
 `generate_docs(files, folder_name = "docs", gh_url = "", run_examples = FALSE)` \

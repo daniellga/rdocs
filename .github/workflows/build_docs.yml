@@ -39,29 +39,27 @@ jobs:
 
       - name: build documentation
         run: |
+          print(getwd())
           rdocs::generate_docs(files = "./rdocs/R/main.R", folder_name = "docs", gh_url = "https://github.com/daniellga/rdocs/tree/main/rdocs/R", run_examples = FALSE)
         shell: Rscript {0}
 
       - name: Check for changes
         id: check_changes
         run: |
-          git diff --exit-code
-          if [ $? -eq 1 ]; then
-            echo "Changes detected."
-            exit 0
-          else
+          git diff --exit-code || echo "Git has changes."
+          if [ $? -eq 0 ]; then
             echo "No changes to commit."
-            exit 1
+            exit 0
           fi
 
       - name: Commit and push changes
-        if: steps.check_changes.outputs['exit-code'] == '0'
+        if: steps.check_changes.outputs['exit-code'] != '0'
         run: |
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           git config --global user.name "${GITHUB_ACTOR}"
 
           git add .
           git status
-          git commit -m "built docs"
-          git push origin main
+          git commit -m "Created github pages docs"
+          git push origin master
 

@@ -106,7 +106,7 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "", run_examples
   folder_name <- shQuote(folder_name)
 
   if (!file.exists(RDOCS_PATH)) {
-    cat("Downloading rdocs binary")
+    cat("Downloading rdocs binary.")
     download_rdocs()
   }
 
@@ -114,6 +114,8 @@ generate_docs <- function(files, folder_name = "docs", gh_url = "", run_examples
 
   # Create qmd files and build and render quarto project.
   system2(RDOCS_PATH, args = c("--files", files, "--folder-name", folder_name, "--gh-url", gh_url, run_examples))
+
+  cat("Documentation has been built.")
 
   invisible(NULL)
 }
