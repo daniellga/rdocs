@@ -20,7 +20,7 @@ get_download_url <- function() {
 
   binary <- switch(os,
     Windows = "rdocs-x86_64-pc-windows-msvc.zip",
-    Linux   = if (arch == "x86-64") "rdocs-x86_64-unknown-linux-gnu.tar.xz" else "rdocs-aarch64-unknown-linux-gnu.tar.xz",
+    Linux   = "rdocs-x86_64-unknown-linux-gnu.tar.xz",
     Darwin  = if (arch == "x86-64") "rdocs-x86_64-apple-darwin.tar.xz" else "rdocs-aarch64-apple-darwin.tar.xz"
   )
 
