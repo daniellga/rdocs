@@ -39,8 +39,8 @@ jobs:
 
       - name: build documentation
         run: |
-          print(getwd())
-          rdocs::generate_docs(files = "./R/main.R", folder_name = "docs", gh_url = "https://github.com/daniellga/rdocs/tree/main/rdocs/R", run_examples = FALSE)
+          print(list.files())
+          rdocs::generate_docs(files = ".rdocs/R/main.R", folder_name = "docs", gh_url = "https://github.com/daniellga/rdocs/tree/main/rdocs/R", run_examples = FALSE)
         shell: Rscript {0}
 
       - name: Check for changes
