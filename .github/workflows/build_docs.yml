@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 name: build docs 
 
@@ -46,7 +46,7 @@ jobs:
           git add .
           git status
           git commit -m "built docs"
-          git push origin master
+          git push origin main
 
           
     env:

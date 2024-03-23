@@ -1,10 +1,10 @@
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - rdocs/**
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - rdocs/**
 
