@@ -45,7 +45,8 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          ls
+          git status
+          git config user.name
 
           git diff --exit-code
           if [ $? -eq 0 ]; then
