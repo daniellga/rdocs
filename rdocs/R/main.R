@@ -27,6 +27,20 @@ get_download_url <- function() {
   paste(RDOCS_URL_BASE, latest_release, binary, sep = "/")
 }
 
+### Functions
+### ## download_rdocs
+###
+### `download_rdocs()` \
+###
+### Forces the update of the cached binary. \
+### Use this when the package version has been updated and a new update release is available. \
+###
+### #### Examples
+###
+### ```r
+### rdocs::download_rdocs()
+### ```
+###
 download_rdocs <- function() {
   download_tmp_dir <- tempfile()
   extract_tmp_dir <- tempfile()
