@@ -39,6 +39,7 @@ jobs:
 
       - name: build documentation
         run: |
+          print(Sys.info()[["machine"]])
           rdocs::generate_docs(files = "./rdocs/R/main.R", folder_name = "docs", gh_url = "https://github.com/daniellga/rdocs/tree/main/rdocs/R", run_examples = FALSE)
         shell: Rscript {0}
 
@@ -61,7 +62,4 @@ jobs:
           git status
           git commit -m "built docs"
           git push origin main
-
-          
-
 
