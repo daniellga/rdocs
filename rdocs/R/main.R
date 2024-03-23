@@ -33,7 +33,7 @@ get_download_url <- function() {
 ### `download_rdocs()` \
 ###
 ### Forces the update of the cached binary. \
-### Use this when the package version has been updated and a new update release is available. \
+### Use this when the package version has been updated and a new updated release is available. \
 ###
 ### #### Examples
 ###
