@@ -23,8 +23,10 @@ jobs:
         with:
           use-public-rspm: true
             
-      - name: Install dependencies
+      - name: Set up R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: ./rdocs
 
       - name: build documentation
         run: |
