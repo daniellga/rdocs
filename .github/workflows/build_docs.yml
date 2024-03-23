@@ -46,13 +46,16 @@ jobs:
         id: check_changes
         run: |
           git diff --exit-code
-          if [ $? -eq 0 ]; then
-            echo "No changes to commit."
+          if [ $? -eq 1 ]; then
+            echo "Changes detected."
             exit 0
+          else
+            echo "No changes to commit."
+            exit 1
           fi
 
       - name: Commit and push changes
-        if: steps.check_changes.outputs['exit-code'] != '0'
+        if: steps.check_changes.outputs['exit-code'] == '0'
         run: |
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           git config --global user.name "${GITHUB_ACTOR}"
