@@ -45,18 +45,12 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          mkdir firfir
-          
-          git diff --exit-code
-          if [ $? -eq 0 ]; then
-            echo "No changes to commit."
-            echo "::set-output name=changes::false"
-          else
-            echo "::set-output name=changes::true"
+          if [[ -n $(git status --porcelain) ]]; then
+              echo "changes=true" >> "$GITHUB_OUTPUT"; 
           fi
 
       - name: Commit and push changes
-        if: steps.check_changes.outputs.changes == 'true'
+        if: env.GITHUB_OUTPUT == 'true'
         run: |
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           git config --global user.name "${GITHUB_ACTOR}"
@@ -64,4 +58,6 @@ jobs:
           git add .
           git commit -m "Update docs"
           git push origin master
+        env:
+          GITHUB_OUTPUT: ${{ steps.check_changes.outputs.GITHUB_OUTPUT }}
 
