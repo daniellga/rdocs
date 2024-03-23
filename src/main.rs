@@ -83,7 +83,11 @@ fn generate_r_docs(
 
         // counts the line in a code chunk
         let mut counter: i32 = -1;
-        for (line_counter, line) in BufReader::new(input_file).lines().flatten().enumerate() {
+        for (line_counter, line) in BufReader::new(input_file)
+            .lines()
+            .map_while(Result::ok)
+            .enumerate()
+        {
             let line_trimmed = line.trim_start();
 
             // skip non-commented lines.
@@ -107,7 +111,7 @@ fn generate_r_docs(
                         skip_comment_chunk = true;
                         continue;
                     }
-                    hash.entry(key.clone()).or_insert_with(Vec::new);
+                    hash.entry(key.clone()).or_default();
                     last_line_was_comment = true;
                 } else {
                     if run_examples {
@@ -150,7 +154,7 @@ fn generate_r_docs(
                             .unwrap();
 
                         // Remove a possible starting dot in path.
-                        let filename_str = if filename.strip_prefix(".").is_some() {
+                        let filename_str = if filename.strip_prefix('.').is_some() {
                             &filename[1..]
                         } else {
                             &filename[..]
@@ -220,12 +224,14 @@ fn eval_examples(examples: Vec<String>) {
 // Create a quarto project and render.
 fn quarto_process(folder_name: &str, folder_name_hidden: &str) {
     // If the directory is already used as a quarto project, it should error but the rest of the program is run anyway.
-    let _ = Command::new("quarto")
+    let quarto_create_output = Command::new("quarto")
         .args(["create", "project", "website", folder_name_hidden])
         .output();
+    println!("{:?}", quarto_create_output);
+    println!("AQIIOOOOO");
 
     let output_path = Path::new("../").join(folder_name);
-    let _ = Command::new("quarto")
+    let quarto_render_output = Command::new("quarto")
         .args([
             "render",
             folder_name_hidden,
@@ -233,6 +239,8 @@ fn quarto_process(folder_name: &str, folder_name_hidden: &str) {
             output_path.to_str().unwrap(),
         ])
         .output();
+    println!("{:?}", quarto_render_output);
+    println!("222222222222");
 }
 
 pub fn normalize_path(path: &Path) -> PathBuf {
