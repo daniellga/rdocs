@@ -12,6 +12,10 @@ jobs:
   run_commands:
     runs-on: ubuntu-latest
 
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -59,8 +63,5 @@ jobs:
           git push origin main
 
           
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
 
 
