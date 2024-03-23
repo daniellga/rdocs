@@ -18,7 +18,7 @@ remotes::install_github("daniellga/rdocs", subdir = "rdocs")
 ## Usage
 
 An example is showed below, where 2 distinct functions will be documented on the same section, named HFft. 
-Generate a quarto website from lines starting with `###` or `///` that are right above function declarations. \
+It generates a quarto website from lines starting with `###` or `///` that are right above function declarations. \
 The website folder is created in the current working directory. \
 The first line of the block is important, since the name of the variable will be used to group functions into the
 same one-worded section. This is useful, for example, when working using an OOP approach. For now, to avoid any
@@ -26,7 +26,7 @@ bugs, it is important that all grouped functions are on the same file. \
 The user is free to create its headings, line breaks and make use of all other markdown utilities. \
 All R code identified by r code markdown blocks will be evaluated in a separate R session. If you don't want a certain part of the
 code to be run, it will be needed to comment it or avoid the code block representation. If you don't want to evaluate
-the code at all, use `run_examples = FALSE`, which is the default. \
+the code at all, use `run_examples = FALSE`, which is the default.
 
 `testscript.rs`
 ```r
