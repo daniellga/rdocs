@@ -45,6 +45,8 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
+          pwd
+          ls
           git add .
           git diff --exit-code || echo "Git has changes."
           if [ $? -eq 0 ]; then
