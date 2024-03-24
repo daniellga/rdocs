@@ -8,6 +8,8 @@ on:
 
 name: build docs 
 
+permissions: write-all
+
 jobs:
   run_commands:
     runs-on: ubuntu-latest
