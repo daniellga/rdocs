@@ -55,7 +55,7 @@ jobs:
       - name: Commit and push changes
         env:
           CHANGES: ${{ steps.check_changes.outputs.CHANGES }}
-        if: ${{ CHANGES }} == 'true'
+        if: env.CHANGES == 'true'
         run: |
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           git config --global user.name "${GITHUB_ACTOR}"
