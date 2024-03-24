@@ -136,7 +136,7 @@ fn generate_r_docs(
                     // Regular expression to match function declarations
                     let fn_declaration_regex = Regex::new(r"\s*fn\s+[a-zA-Z_]\w*\s*\(").unwrap();
                     let function_declaration_regex =
-                        Regex::new(r"\s*function\s+[a-zA-Z_]\w*\s*\(").unwrap();
+                        Regex::new(r"^\s*[^#]*(?:<-|==)\s*function\s*\([^()]*\)\s*\{").unwrap();
 
                     // add the source text. Code on github must be updated.
                     if last_line_was_comment
