@@ -224,14 +224,12 @@ fn eval_examples(examples: Vec<String>) {
 // Create a quarto project and render.
 fn quarto_process(folder_name: &str, folder_name_hidden: &str) {
     // If the directory is already used as a quarto project, it should error but the rest of the program is run anyway.
-    let quarto_create_output = Command::new("quarto")
+    let _ = Command::new("quarto")
         .args(["create", "project", "website", folder_name_hidden])
         .output();
-    println!("{:?}", quarto_create_output);
-    println!("AQIIOOOOO");
 
     let output_path = Path::new("../").join(folder_name);
-    let quarto_render_output = Command::new("quarto")
+    let _ = Command::new("quarto")
         .args([
             "render",
             folder_name_hidden,
@@ -239,8 +237,6 @@ fn quarto_process(folder_name: &str, folder_name_hidden: &str) {
             output_path.to_str().unwrap(),
         ])
         .output();
-    println!("{:?}", quarto_render_output);
-    println!("222222222222");
 }
 
 pub fn normalize_path(path: &Path) -> PathBuf {
