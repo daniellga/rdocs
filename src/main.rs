@@ -154,11 +154,8 @@ fn generate_r_docs(
                             .unwrap();
 
                         // Remove a possible starting dot in path.
-                        let filename_str = if filename.strip_prefix('.').is_some() {
-                            &filename[1..]
-                        } else {
-                            &filename[..]
-                        };
+                        let filename_str =
+                            Path::new(filename).file_name().unwrap().to_str().unwrap();
 
                         let source = "<span style=\"float: right;\"> [source](".to_string()
                             + gh_url
