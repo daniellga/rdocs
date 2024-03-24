@@ -153,6 +153,7 @@ fn generate_r_docs(
 
                         let source = "<span style=\"float: right;\"> [source](".to_string()
                             + gh_url
+                            + "/"
                             + filename_str
                             + "#L"
                             + &(line_counter + 1).to_string()
