@@ -77,7 +77,8 @@ jobs:
           git add .
           git commit -m "Update docs"
           git push origin main
-                - name: Setup Pages
+
+      - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
