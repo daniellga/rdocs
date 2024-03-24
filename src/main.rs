@@ -148,14 +148,8 @@ fn generate_r_docs(
                         let elem = &mut vec[len - counter as usize + 2];
                         elem.pop();
 
-                        let filename = files
-                            .iter()
-                            .find(|&x| x.contains(&key.to_lowercase()))
-                            .unwrap();
-
-                        // Remove a possible starting dot in path.
-                        let filename_str =
-                            Path::new(filename).file_name().unwrap().to_str().unwrap();
+                        // Get the file name.
+                        let filename_str = Path::new(file).file_name().unwrap().to_str().unwrap();
 
                         let source = "<span style=\"float: right;\"> [source](".to_string()
                             + gh_url
