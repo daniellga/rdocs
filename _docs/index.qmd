@@ -1,5 +1,5 @@
 ---
-title: "rdocs"
+title: ""
 ---
 
 ## rdocs: Simple Quarto documentation for R packages 

@@ -29,7 +29,7 @@ code to be run, it will be needed to comment it or avoid the code block represen
 the code at all, use `run_examples = FALSE`, which is the default.
 
 `testscript.rs`
-```r
+```rs
 /// HFft
 /// ## fft
 ///
