@@ -1,17 +1,29 @@
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_run:
     workflows: ["CI release"]
     types:
       - completed
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 name: build docs 
 
 permissions: write-all
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  run_commands:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
 
     env:
@@ -65,4 +77,15 @@ jobs:
           git add .
           git commit -m "Update docs"
           git push origin main
+                - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './docs/'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
