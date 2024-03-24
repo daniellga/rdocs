@@ -4,7 +4,7 @@ title: Functions
 
 ## download_rdocs
 
-`download_rdocs()` \
+`download_rdocs()` <span style="float: right;"> [source](https://github.com/daniellga/rdocs/tree/main/rdocs/Rmain.R#L44) </span> \
 
 Forces the update of the cached binary. \
 Use this when the package version has been updated and a new updated release is available. \
@@ -17,7 +17,7 @@ rdocs::download_rdocs()
 
 ## generate_docs
 
-`generate_docs(files, folder_name = "docs", gh_url = "", run_examples = FALSE)` \
+`generate_docs(files, folder_name = "docs", gh_url = "", run_examples = FALSE)` <span style="float: right;"> [source](https://github.com/daniellga/rdocs/tree/main/rdocs/Rmain.R#L103) </span> \
 
 Generate a quarto website from lines starting with `###` or `///` that are right above function declarations. \
 The website folder is created in the current working directory. \
