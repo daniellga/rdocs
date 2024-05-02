@@ -5,7 +5,7 @@ use std::{
     fs::File,
     io::{BufRead, BufReader, Write},
     path::{Component, Path, PathBuf},
-    process::Command,
+    process::{Command, Stdio},
 };
 
 /// Create quarto docs from code comments. The command must be called in the package's main folder.
@@ -209,10 +209,17 @@ fn eval_examples(examples: Vec<String>) {
     let pkg_call = ["library", pkg_name].join(" ");
     let output_text = [pkg_call.as_str(), examples.join(";").as_str()].join(";");
 
-    let _ = Command::new("Rscript")
+    let output = Command::new("Rscript")
         .args(["--vanilla", "-e", output_text.as_str()])
+        .stdout(Stdio::null())
+        .stderr(Stdio::piped())
         .output()
-        .unwrap_or_else(|_| panic!("Error running example:\n{}", output_text));
+        .expect("Failed to execute Rscript");
+
+    if !output.status.success() {
+        let error_message = String::from_utf8_lossy(&output.stderr);
+        panic!("Error running example:\n{}", error_message);
+    }
 }
 
 // Create a quarto project and render.
