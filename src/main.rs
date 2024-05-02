@@ -205,12 +205,14 @@ fn eval_examples(examples: Vec<String>) {
         .unwrap()
         .to_str()
         .unwrap();
+    // Make a call to "library("pkg_name")" before the example block is run.
     let pkg_call = ["library", pkg_name].join(" ");
     let output_text = [pkg_call.as_str(), examples.join(";").as_str()].join(";");
 
     let _ = Command::new("Rscript")
         .args(["--vanilla", "-e", output_text.as_str()])
-        .output();
+        .output()
+        .unwrap_or_else(|_| panic!("Error running example:\n{}", output_text));
 }
 
 // Create a quarto project and render.
