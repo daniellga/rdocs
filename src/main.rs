@@ -196,8 +196,10 @@ fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
     }
 }
 
-fn eval_examples(examples: Vec<String>) {
+fn eval_examples(mut examples: Vec<String>) {
     // Construct the output text.
+    // remove empty lines resulting in ";;".
+    examples.retain(|s| !s.is_empty());
     let output_text = examples.join(";");
 
     let output = Command::new("Rscript")
