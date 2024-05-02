@@ -201,7 +201,7 @@ fn eval_examples(examples: Vec<String>) {
     let output_text = examples.join(";");
 
     let output = Command::new("Rscript")
-        .args(["-e", output_text.as_str()])
+        .args(["--vanilla", "-e", output_text.as_str()])
         .stdout(Stdio::null())
         .stderr(Stdio::piped())
         .output()
