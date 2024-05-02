@@ -179,8 +179,8 @@ fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
         let docs_file_path = contents_folder.join(&key_lowercase).with_extension("qmd");
 
         // Create the folders if they don't exist.
-        std::fs::create_dir_all(folder_name_hidden).expect("directory could not be created");
-        std::fs::create_dir_all(contents_folder).expect("directory could not be created");
+        std::fs::create_dir_all(folder_name_hidden).expect("Directory could not be created.");
+        std::fs::create_dir_all(contents_folder).expect("Directory could not be created.");
 
         let title = format!("title: {}", key);
         let text = ["---", &title, "---"].join("\n");
@@ -189,10 +189,10 @@ fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
         let output_text = [text, value.join("\n")].join("\n\n");
 
         // Write the output text to the output file.
-        let mut output_file = File::create(&docs_file_path).expect("could not create output_file");
+        let mut output_file = File::create(&docs_file_path).expect("Could not create output_file.");
         output_file
             .write_all(output_text.as_bytes())
-            .expect("could not write to output_file");
+            .expect("Could not write to output_file.");
     }
 }
 
@@ -205,11 +205,14 @@ fn eval_examples(examples: Vec<String>) {
         .stdout(Stdio::null())
         .stderr(Stdio::piped())
         .output()
-        .expect("Failed to execute Rscript");
+        .expect("Failed to execute Rscript.");
 
     if !output.status.success() {
         let error_message = String::from_utf8_lossy(&output.stderr);
-        panic!("Error running example:\n{}", error_message);
+        panic!(
+            "Error running example:\n\n{}\n\n**********\n\nR code executed:\n\n{}",
+            error_message, output_text
+        );
     }
 }
 
