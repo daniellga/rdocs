@@ -90,7 +90,7 @@ download_rdocs <- function() {
 ### A github url indicating where the documented files will be stored. It will create a link to the source code for each
 ### function. The default value will not create such links. \
 ### * `run_examples` \
-### If `TRUE`, All R code identified in an r code block will be evaluated in a separate R session. If you don't want a certain part
+### If `TRUE`, All R code identified in an R code block will be evaluated in a separate R session. If you don't want a certain part
 ### of the code to be run, it will be needed to comment it or avoid the r code representation in markdown. \
 ###
 ###
