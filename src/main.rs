@@ -198,16 +198,7 @@ fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
 
 fn eval_examples(examples: Vec<String>) {
     // Construct the output text.
-    let pkg_name_string = std::env::current_dir().unwrap();
-    let pkg_name = pkg_name_string
-        .as_path()
-        .file_name()
-        .unwrap()
-        .to_str()
-        .unwrap();
-    // Make a call to "library("pkg_name")" before the example block is run.
-    let pkg_call = ["library", pkg_name].join(" ");
-    let output_text = [pkg_call.as_str(), examples.join(";").as_str()].join(";");
+    let output_text = examples.join(";");
 
     let output = Command::new("Rscript")
         .args(["--vanilla", "-e", output_text.as_str()])
