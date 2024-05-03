@@ -105,7 +105,7 @@ fn generate_r_docs(
 
                 // associate with key in first line of comment chunk. Keys are identifiable by a 1 word line.
                 if !last_line_was_comment {
-                    key = filtered_line.clone();
+                    key.clone_from(&filtered_line);
                     // key should have only one word
                     if key.contains(' ') {
                         skip_comment_chunk = true;
@@ -119,7 +119,7 @@ fn generate_r_docs(
 
                         if inside_code_chunk {
                             if filtered_line_trimmed == "```" {
-                                examples.push("rm(list = ls())".to_string());
+                                examples.push("***end_of_example".to_string());
                                 inside_code_chunk = false;
                             } else {
                                 examples.push(filtered_line.clone());
@@ -202,19 +202,22 @@ fn eval_examples(mut examples: Vec<String>) {
     examples.retain(|s| !s.is_empty());
     let output_text = examples.join(";");
 
-    let output = Command::new("Rscript")
-        .args(["--vanilla", "-e", output_text.as_str()])
-        .stdout(Stdio::null())
-        .stderr(Stdio::piped())
-        .output()
-        .expect("Failed to execute Rscript.");
+    // Iterate for each example chunk in the file.
+    for example in output_text.split("***end_of_example;") {
+        let output = Command::new("Rscript")
+            .args(["--vanilla", "-e", example])
+            .stdout(Stdio::null())
+            .stderr(Stdio::piped())
+            .output()
+            .expect("Failed to execute Rscript.");
 
-    if !output.status.success() {
-        let error_message = String::from_utf8_lossy(&output.stderr);
-        panic!(
-            "Error running example:\n\n{}\n\n**********\n\nR code executed:\n\n{}",
-            error_message, output_text
-        );
+        if !output.status.success() {
+            let error_message = String::from_utf8_lossy(&output.stderr);
+            panic!(
+                "Error running example:\n\n{}\n\n**********\n\nR code executed:\n\n{}",
+                error_message, output_text
+            );
+        }
     }
 }
 
