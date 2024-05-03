@@ -215,7 +215,7 @@ fn eval_examples(mut examples: Vec<String>) {
             let error_message = String::from_utf8_lossy(&output.stderr);
             panic!(
                 "Error running example:\n\n{}\n\n**********\n\nR code executed:\n\n{}",
-                error_message, output_text
+                error_message, example
             );
         }
     }
