@@ -198,9 +198,11 @@ fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
 
 fn eval_examples(mut examples: Vec<String>) {
     // Construct the output text.
-    // remove empty lines resulting in ";;".
+    // Remove empty lines resulting in ";;".
     examples.retain(|s| !s.is_empty());
-    let output_text = examples.join(";");
+    let mut output_text = examples.join(";");
+    // Needed because the last "***end_of_example" was not followed by ";".
+    output_text.push(';');
 
     // Iterate for each example chunk in the file.
     for example in output_text.split("***end_of_example;") {
@@ -234,7 +236,9 @@ fn quarto_process(folder_name: &str, folder_name_hidden: &str) {
             "render",
             folder_name_hidden,
             "--output-dir",
-            output_path.to_str().unwrap(),
+            output_path
+                .to_str()
+                .expect("Failed to execute quarto render."),
         ])
         .output();
 }
