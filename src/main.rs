@@ -206,6 +206,9 @@ fn eval_examples(mut examples: Vec<String>) {
 
     // Iterate for each example chunk in the file.
     for example in output_text.split("***end_of_example;") {
+        if example.is_empty() {
+            continue;
+        }
         let output = Command::new("Rscript")
             .args(["--vanilla", "-e", example])
             .stdout(Stdio::null())
@@ -216,7 +219,7 @@ fn eval_examples(mut examples: Vec<String>) {
         if !output.status.success() {
             let error_message = String::from_utf8_lossy(&output.stderr);
             panic!(
-                "Error running example:\n\n{}\n\n**********\n\nR code executed:\n\n{}",
+                "Error running R example:\n{}\nR code executed which generated error:\n{}",
                 error_message, example
             );
         }
