@@ -146,7 +146,6 @@ fn generate_r_docs(
                         let vec = hash.get_mut(&key).unwrap();
                         let len = vec.len();
                         let elem = &mut vec[len - counter as usize + 2];
-                        elem.pop();
 
                         // Get the file name.
                         let filename_str = Path::new(file).file_name().unwrap().to_str().unwrap();
