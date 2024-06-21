@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -198,11 +198,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="download_rdocs" class="level2">
 <h2 class="anchored" data-anchor-id="download_rdocs">download_rdocs</h2>
-<p><code>download_rdocs()</code> <span style="float: right;"> <a href="https://github.com/daniellga/rdocs/tree/main/rdocs/R/main.R#L44">source</a> </span><br>
+<p><code>download_rdocs()</code><span style="float: right;"> <a href="https://github.com/daniellga/rdocs/tree/main/rdocs/R/main.R#L45">source</a> </span><br>
 </p>
-<p>Forces the update of the cached binary.<br>
-Use this when the package version has been updated and a new updated release is available.<br>
-</p>
+<p>Forces the update of the cached binary.</p>
+<p>Use this when the package version has been updated and a new updated release is available.</p>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rdocs<span class="sc">::</span><span class="fu">download_rdocs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -210,29 +209,31 @@ Use this when the package version has been updated and a new updated release is 
 </section>
 <section id="generate_docs" class="level2">
 <h2 class="anchored" data-anchor-id="generate_docs">generate_docs</h2>
-<p><code>generate_docs(files, folder_name = "docs", gh_url = "", run_examples = FALSE)</code> <span style="float: right;"> <a href="https://github.com/daniellga/rdocs/tree/main/rdocs/R/main.R#L103">source</a> </span><br>
+<p><code>generate_docs(files, folder_name = "docs", gh_url = "", run_examples = FALSE)</code><span style="float: right;"> <a href="https://github.com/daniellga/rdocs/tree/main/rdocs/R/main.R#L114">source</a> </span><br>
 </p>
-<p>Generate a quarto website from lines starting with <code>###</code> or <code>///</code> that are right above function declarations.<br>
-The website folder is created in the current working directory.<br>
-The first line of the block is important, since the name of the variable will be used to group functions into the same one-worded section. This is useful, for example, when working using an OOP approach. For now, to avoid any bugs, it is important that all grouped functions are on the same file.<br>
-The user is free to create its headings, line breaks and make use of all other markdown utilities.<br>
-All R code identified by r code markdown blocks will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the code block representation. If you don’t want to evaluate the code at all, use <code>run_examples = FALSE</code>, which is the default.<br>
-</p>
+<p>Generate a quarto website from lines starting with <code>###</code> or <code>///</code> that are right above function declarations.</p>
+<p>The website folder is created in the current working directory.</p>
+<p>The first line of the block is important, since the name of the variable will be used to group functions into the same one-worded section. This is useful, for example, when working using an OOP approach. For now, to avoid any bugs, it is important that all grouped functions are on the same file.</p>
+<p>The user is free to create its headings, line breaks and make use of all other markdown utilities.</p>
+<p>All R code identified by r code markdown blocks will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the code block representation. If you don’t want to evaluate the code at all, use <code>run_examples = FALSE</code>, which is the default.</p>
 <section id="arguments" class="level4">
 <h4 class="anchored" data-anchor-id="arguments">Arguments</h4>
 <ul>
-<li><code>files</code><br>
-The files that will be used to create the <code>.qmd</code> documentation.</li>
-<li><code>folder_name</code><br>
-Name of the folder which will store the website.<br>
-</li>
-<li><code>gh_url</code><br>
-A github url indicating where the documented files will be stored. It will create a link to the source code for each function. The default value will not create such links.<br>
-</li>
-<li><code>run_examples</code><br>
-If <code>TRUE</code>, All R code identified in an R code block will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the r code representation in markdown.<br>
-</li>
+<li><code>files</code></li>
 </ul>
+<p>The files that will be used to create the <code>.qmd</code> documentation.</p>
+<ul>
+<li><code>folder_name</code></li>
+</ul>
+<p>Name of the folder which will store the website.</p>
+<ul>
+<li><code>gh_url</code></li>
+</ul>
+<p>A github url indicating where the documented files will be stored. It will create a link to the source code for each function. The default value will not create such links.</p>
+<ul>
+<li><code>run_examples</code></li>
+</ul>
+<p>If <code>TRUE</code>, All R code identified in an R code block will be evaluated in a separate R session. If you don’t want a certain part of the code to be run, it will be needed to comment it or avoid the r code representation in markdown.</p>
 </section>
 <section id="examples-1" class="level4">
 <h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
