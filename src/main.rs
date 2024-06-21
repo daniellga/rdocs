@@ -187,7 +187,7 @@ fn output_file(hash: HashMap<String, Vec<String>>, folder_name_hidden: &str) {
         // Construct the final output text.
         let output_text = [text, value.join("\n")].join("\n\n");
 
-        // Write the output text to the output file.
+        // Write the output text into the output file.
         let mut output_file = File::create(&docs_file_path).expect("Could not create output_file.");
         output_file
             .write_all(output_text.as_bytes())

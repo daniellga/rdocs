@@ -30,10 +30,11 @@ get_download_url <- function() {
 ### Functions
 ### ## download_rdocs
 ###
-### `download_rdocs()` \
+### `download_rdocs()`
 ###
-### Forces the update of the cached binary. \
-### Use this when the package version has been updated and a new updated release is available. \
+### Forces the update of the cached binary.
+###
+### Use this when the package version has been updated and a new updated release is available.
 ###
 ### #### Examples
 ###
@@ -68,31 +69,41 @@ download_rdocs <- function() {
 ### Functions
 ### ## generate_docs
 ###
-### `generate_docs(files, folder_name = "docs", gh_url = "", run_examples = FALSE)` \
+### `generate_docs(files, folder_name = "docs", gh_url = "", run_examples = FALSE)`
 ###
-### Generate a quarto website from lines starting with `###` or `///` that are right above function declarations. \
-### The website folder is created in the current working directory. \
+### Generate a quarto website from lines starting with `###` or `///` that are right above function declarations.
+###
+### The website folder is created in the current working directory.
+###
 ### The first line of the block is important, since the name of the variable will be used to group functions into the
 ### same one-worded section. This is useful, for example, when working using an OOP approach. For now, to avoid any
-### bugs, it is important that all grouped functions are on the same file. \
-### The user is free to create its headings, line breaks and make use of all other markdown utilities. \
+### bugs, it is important that all grouped functions are on the same file.
+###
+### The user is free to create its headings, line breaks and make use of all other markdown utilities.
+###
 ### All R code identified by r code markdown blocks will be evaluated in a separate R session. If you don't want a certain part of the
 ### code to be run, it will be needed to comment it or avoid the code block representation. If you don't want to evaluate
-### the code at all, use `run_examples = FALSE`, which is the default. \
+### the code at all, use `run_examples = FALSE`, which is the default.
 ###
 ### #### Arguments
 ###
-### * `files` \
-### The files that will be used to create the `.qmd` documentation.
-### * `folder_name` \
-### Name of the folder which will store the website. \
-### * `gh_url` \
-### A github url indicating where the documented files will be stored. It will create a link to the source code for each
-### function. The default value will not create such links. \
-### * `run_examples` \
-### If `TRUE`, All R code identified in an R code block will be evaluated in a separate R session. If you don't want a certain part
-### of the code to be run, it will be needed to comment it or avoid the r code representation in markdown. \
+### * `files`
 ###
+### The files that will be used to create the `.qmd` documentation.
+###
+### * `folder_name`
+###
+### Name of the folder which will store the website.
+###
+### * `gh_url`
+###
+### A github url indicating where the documented files will be stored. It will create a link to the source code for each
+### function. The default value will not create such links.
+###
+### * `run_examples`
+###
+### If `TRUE`, All R code identified in an R code block will be evaluated in a separate R session. If you don't want a certain part
+### of the code to be run, it will be needed to comment it or avoid the r code representation in markdown.
 ###
 ### #### Examples
 ###

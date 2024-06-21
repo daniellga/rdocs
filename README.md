@@ -33,13 +33,13 @@ the code at all, use `run_examples = FALSE`, which is the default.
 /// HFft
 /// ## fft
 ///
-/// `fft() -> HArray` \
+/// `fft() -> HArray`
 ///
-/// Computes the fast fourier transform of the `HArray`. \
+/// Computes the fast fourier transform of the `HArray`.
 ///
 /// #### Returns
 ///
-/// An `HArray`. \
+/// An `HArray`.
 ///
 /// #### Examples
 ///
@@ -57,11 +57,11 @@ fn fft(harray: &HArray) -> HArray {
 /// HFft
 /// ## fft_mut
 ///
-/// `fft_mut()` \
+/// `fft_mut()`
 ///
-/// Computes the fast fourier transform of the `HArray`. \
-/// The operation is done in-place. \
-
+/// Computes the fast fourier transform of the `HArray`.
+/// The operation is done in-place.
+///
 /// #### Examples
 ///
 /// ```r
@@ -78,7 +78,7 @@ fn fft_mut(harray: &mut HArray) {
 ```
 
 ```r
-rdocs::generate_docs("./testscript.R")
+rdocs::generate_docs("./testscript.rs")
 ```
 
 The website will be generated on the current working directory.
