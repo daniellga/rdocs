@@ -3,6 +3,7 @@ on:
     branches: [ main, master ]
     paths:
       - rdocs/**
+      - _docs/**
   workflow_run:
     workflows: ["R-CMD-check"]
     types:
