@@ -11,9 +11,10 @@ This library's [documentation](https://daniellga.github.io/rdocs/) was created u
 Install [Quarto](https://quarto.org/) and add it to PATH.
 
 Install the package from github:
-```r
-remotes::install_github("daniellga/rdocs", subdir = "rdocs")
-```
+`remotes::install_github("daniellga/rdocs", subdir = "rdocs")`
+
+or from R-universe:
+`install.packages('rdocs', repos = 'https://daniellga.r-universe.dev')`
 
 ## Usage
 
